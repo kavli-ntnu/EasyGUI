@@ -262,6 +262,12 @@ classdef (Sealed) autogui < gui.container
                                                   'flowdirection','lefttoright', ...
                                                   'tag', 'autogui-guipanelgroup');
 
+            % It is crucial to adjust size here and not after obj.addPanel()
+            panelGroupPosition = get(obj.UiGuiPanelGroup, 'Position');
+            panelGroupPosition(3) = 1; % set to width of UiGuiArea
+            panelGroupPosition(4) = obj.MinimumGuiPanelHeight; % set to height of UiGuiArea
+            set(obj.UiGuiPanelGroup, 'Position', panelGroupPosition);
+            
             obj.addPanel();
             set(obj.UiGuiArea, 'HeightLimits', obj.MinimumGuiPanelHeight + [0 0]);
 
@@ -784,6 +790,9 @@ classdef (Sealed) autogui < gui.container
                 figpos(3) = figpos(3) + delta;
             end
             set(obj.UiGuiArea, 'WidthLimits', guiwidth);
+            panelGroupPosition = get(obj.UiGuiPanelGroup, 'Position');
+            panelGroupPosition(3) = guiwidth(1); % set to width of UiGuiArea
+            set(obj.UiGuiPanelGroup, 'Position', panelGroupPosition);
             set(obj.UiHandle, 'position', figpos);
         end
 
@@ -823,6 +832,9 @@ classdef (Sealed) autogui < gui.container
             % check if we need to grow the GuiArea
             if totalHeight > obj.MinimumGuiPanelHeight
                 set(obj.UiGuiArea, 'HeightLimits', totalHeight + [0 0]);
+                panelGroupPosition = get(obj.UiGuiPanelGroup, 'Position');
+                panelGroupPosition(4) = totalHeight; % set to height of UiGuiArea
+                set(obj.UiGuiPanelGroup, 'Position', panelGroupPosition);
                 obj.MinimumGuiPanelHeight = totalHeight;
 
                 % check if we need to grow the figure as well
