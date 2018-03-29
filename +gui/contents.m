@@ -1,11 +1,11 @@
 % EasyGUI: A package for creating GUIs quickly and easily
-% 
-% GUI controls (aka. widgets)  
+%
+% GUI controls (aka. widgets)
 %    gui.checkbox      - check box
-%    gui.edittext      - field for entering text 
+%    gui.edittext      - field for entering text
 %    gui.editnumber    - field for entering numbers
-%    gui.listbox       - scrollable list 
-%    gui.textmenu      - drop-down menu 
+%    gui.listbox       - scrollable list
+%    gui.textmenu      - drop-down menu
 %    gui.numericmenu   - drop-down menu of numbers
 %    gui.slider        - slider for choosing number in a range
 %    gui.pushbutton    - simple button
@@ -38,7 +38,7 @@
 %    fitznag         - GUI with ODE simulation [Fitzhugh-Nagumo model]
 %    lorenzgui       - GUI with ODE simulation [Lorenz chaotic attractor]
 %    fftsmooth       - GUI with interactive image filtering
-%    bpfilter        - Interactive bandpass filter 
+%    bpfilter        - Interactive bandpass filter
 %    rlc_circuit     - Interactive RLC circuit circuit simulation
 %
 %    daqplot         - Analog data acquisition GUI

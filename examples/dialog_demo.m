@@ -5,14 +5,14 @@
 %   input in the structure S. If the user clicks on "Cancel" or closes the
 %   window, S is [].
 %
-%   Note: Currently, the default values for the fields in SAMPLE_DIALOG 
+%   Note: Currently, the default values for the fields in SAMPLE_DIALOG
 %     are hard-coded, but they can be passed in as parameters to this
 %     function (in a input structure, for example).
 
 %   Copyright 2009 The MathWorks, Inc.
 
 function out = dialog_demo
-    
+
 myGui = gui.autogui('Visible', false, 'Location', 'float');
 myGui.Name = 'Parameters for function plotting';
 
@@ -68,7 +68,7 @@ myGui.Exclusive = true;
 myGui.monitor(cancelButton, submitButton);
 allOK = myGui.waitForInput();
 
-if ~allOK 
+if ~allOK
     % window was closed by user
     out = [];
     return;
@@ -78,7 +78,7 @@ if myGui.LastInput == cancelButton
     out = [];
 else
     % user clicked on submit
-    % collect the values and package into a structure    
+    % collect the values and package into a structure
     out.fcnStr = fcnStr.Value;
     out.minX = minX.Value;
     out.maxX = maxX.Value;

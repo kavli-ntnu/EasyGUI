@@ -4,11 +4,11 @@
 %   acquisition. The acquired data is plotted in a scrolling stripchart.
 %
 %   DAQPLOT2 demonstrates how to use the GUI.DAQINPUT widget with the
-%   GUI.STRIPCHART widget. 
+%   GUI.STRIPCHART widget.
 %    - The GUI.DAQINPUT widget allows the user to configure and start
-%      analog data acquisition. 
+%      analog data acquisition.
 %    - DAQPLOT2 simply gets the data and passes it along to the
-%      GUI.STRIPCHART widget. 
+%      GUI.STRIPCHART widget.
 %
 %   THIS GUI REQUIRES THE DATA ACQUISITION TOOLBOX
 

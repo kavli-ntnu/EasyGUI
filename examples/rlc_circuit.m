@@ -52,7 +52,7 @@ while myGui.waitForInput
 
     % Requires Control System Toolbox
     sys = tf(num, den);
-    
+
     t = 0:(1/Fs):10;
     u = sin(2*pi*inputFreq.Value*t);
 
@@ -69,14 +69,14 @@ while myGui.waitForInput
 
     subplot(3,1,3);
     f = linspace(0,10,400);
-    [h,w] = freqs(num,den,2*pi*f);    
+    [h,w] = freqs(num,den,2*pi*f);
     plot(f,20*log10(abs(h)));
     xlabel('Frequency (Hz)');
     ylabel('Log magnitude response (dB)');
     ylims = get(gca,'ylim');
     line([inputFreq.Value inputFreq.Value], ylims, 'color','r');
     axis tight;
-    
+
     title(sprintf('R = %.2f \\Omega, L=%.2fH, C = %.2fF,   input = %.1f Hz', ...
         R.Value, L.Value, C.Value, inputFreq.Value));
 end

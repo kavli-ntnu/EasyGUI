@@ -1,12 +1,12 @@
 % AUTODEMO3     -     EasyGUI example using automatic layout and callbacks
 %
-%   GUI for plotting a lissajous curve 
+%   GUI for plotting a lissajous curve
 %   (http://en.wikipedia.org/wiki/Lissajous_curve)
 %      sin(f1) vs. sin(f2 + theta)
-%  
+%
 %   This example builds on AUTODEMO and AUTODEMO2. It demonstrates
-%   how to process all the user input using *several* callback 
-%   functions. This is more efficient since various signals are 
+%   how to process all the user input using *several* callback
+%   functions. This is more efficient since various signals are
 %   recomputed only when necessary.
 
 %   Copyright 2009 The MathWorks, Inc.
@@ -22,7 +22,7 @@ freq2 = gui.slider('Frequency 2 (Hz)', [1 40]);
 phaseDiff = gui.numericmenu('Phase difference (degrees)', 0:30:180);
 plotType = gui.textmenu('Lissajous plot type', {'2d-phase', '2d-comet'});
 
-% sampling parameters and "global" parameters 
+% sampling parameters and "global" parameters
 Fs = 500;
 t = 0:(1/Fs):1;
 sig1 = zeros(1,numel(t));
@@ -45,17 +45,17 @@ freq2.Value = 25;
 
     function recalcSig1(hWidget) %#ok<INUSD>
         % hWidget is the widget with the just-received input
-        % we don't need this information in this demo        
-        sig1 = sin(2*pi*t*freq1.Value);        
+        % we don't need this information in this demo
+        sig1 = sin(2*pi*t*freq1.Value);
         redrawPlots(hWidget);
     end
 
     function recalcSig2(hWidget) %#ok<INUSD>
-        phaseRadians = phaseDiff.Value * (pi/180);        
+        phaseRadians = phaseDiff.Value * (pi/180);
         sig2 = sin(2*pi*t*freq2.Value + phaseRadians);
         redrawPlots(hWidget);
     end
-    
+
     function redrawPlots(hWidget) %#ok<INUSD>
         axes(ax1);
         plot(t,sig1,'b',t,sig2,'r');
@@ -74,7 +74,7 @@ freq2.Value = 25;
                 comet(sig1,sig2);
         end
     end
-    
+
 end
 
 

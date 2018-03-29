@@ -6,7 +6,7 @@
 function h = uicontainer(varargin)
 persistent UseV0CallingNotation
 
-if isempty(UseV0CallingNotation)   
+if isempty(UseV0CallingNotation)
     UseV0CallingNotation = true;
     hTemp = [];
     try

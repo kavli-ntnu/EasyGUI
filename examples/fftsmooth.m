@@ -1,4 +1,4 @@
-% FFTSMOOTH  -         GUI with interactive image filtering 
+% FFTSMOOTH  -         GUI with interactive image filtering
 %
 %   FFTSMOOTH is an sample GUI that demonstrates spatial lowpass and
 %   highpass filtering. The user can specify the image to use, the type of
@@ -27,17 +27,17 @@ filterType.Value = 'Lowpass';
 
 myFigure1 = [];
 
-while myGui.waitForInput(),    
+while myGui.waitForInput(),
     s = load(imageName.Value);
     isHighpass = strcmp(filterType.Value, 'Highpass');
     newX = imsmooth(s.X, cutoff.Value, isHighpass);
-    
+
     if isempty(myFigure1) || ~ishandle(myFigure1)
         myFigure1 = figure('position', [200 300 650 300]);
         myAxes1 = subplot(1,2,1);
         myAxes2 = subplot(1,2,2);
     end
-    
+
     axes(myAxes1);
     imagesc(s.X); axis equal; axis off;
     colormap(gray);
@@ -56,7 +56,7 @@ end
 % imsmooth(x,frac,dohighpass)
 %  use FFT2 to filter an image
 %   x: the 2D image
-%   frac: a value between 0 and 1.0 (where 1.0 is the Nyquist frequency). 
+%   frac: a value between 0 and 1.0 (where 1.0 is the Nyquist frequency).
 %         this sets the location of the cutoff; the same cutoff is
 %         used for both dimensions.
 function xout = imsmooth(x,frac,dohighpass)
@@ -76,7 +76,7 @@ if dohighpass,
     mask = 1 - mask;
 end
 
-% apply mask 
+% apply mask
 fx = mask .* fx;
 xout = abs(ifft2(ifftshift(fx)));
 

@@ -6,12 +6,12 @@
 %
 %   This example demonstrates how to use EasyGUI with an ODE solver, so
 %   that a user can interactively change parameters and see the new
-%   solution right away. 
+%   solution right away.
 
 %   Copyright 2009 The MathWorks, Inc.
 
 function fitznag
-    
+
 myGui = gui.autogui;
 myGui.Name = 'Fitzhugh-Nagumo model';
 myGui.Location = 'right';
@@ -38,11 +38,11 @@ while myGui.waitForInput()
     end
    [t,y] = solve_equation(paramA.Value, paramB.Value, tau.Value, current.Value);
    subplot(211); plot(t,y); ylim([-2.5 2.5]);
-   xlabel('time'); 
+   xlabel('time');
    subplot(212); plot(y(:,1), y(:,2)); axis([-2.5 2.5 -2.5 2.5]); axis equal;
    xlabel('Voltage V'); ylabel('Recovery variable W');
 end
-    
+
 end
 
 %%

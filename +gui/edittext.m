@@ -17,7 +17,7 @@
 %    w2 = gui.edittext('Your name');
 %    w3 = gui.edittext('Your name',g);
 %
-%    Also see: 
+%    Also see:
 %    <a href="matlab:help gui.edittext.Value">gui.edittext.Value</a>
 %    <a href="matlab:help gui.textmenu">gui.textmenu</a>
 
@@ -25,39 +25,39 @@
 
 classdef (Sealed) edittext < gui.labeleduicontrol
     properties(Dependent)
-        % Value 
+        % Value
         %   The string entered by the user. This property can also be set
         %   programmatically.
         %
         %   Sample usage:
         %    s = gui.edittext('Enter your name');
         %    s.Value % get the value
-        %    s.Value = 'Clark Kent'; % set the value        
+        %    s.Value = 'Clark Kent'; % set the value
         Value
-    end    
-    
+    end
+
     % Main Constructor
     methods
         function obj = edittext(labelStr, varargin)
             if ~exist('labelStr', 'var')
                 labelStr = 'Enter a value:';
             end
-            
+
             obj = obj@gui.labeleduicontrol('edit',labelStr,varargin{:});
             % assert(~obj.Initialized && ~obj.Visible);
             % assert(strcmp(obj.LabelLocation, 'above'));
-            
+
             set(obj.UiControl, 'BackgroundColor', 'w');
             obj.Value = '';
-            
+
             % obj is the most derived class
             obj.Initialized = true;
             obj.Visible = true;
         end
     end
-    
+
     % Interface to properties
-    methods 
+    methods
         function set.Value(obj,val)
             if ~ischar(val)
                 throw(MException('edittext:InvalidValue', 'Value should be a string'));
@@ -65,7 +65,7 @@ classdef (Sealed) edittext < gui.labeleduicontrol
             set(obj.UiControl,'String',val);
             notify(obj,'ValueChanged');
         end
-        
+
         function out = get.Value(obj)
             out = get(obj.UiControl,'String');
         end

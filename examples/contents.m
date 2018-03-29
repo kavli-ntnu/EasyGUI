@@ -12,7 +12,7 @@
 %    fitznag         - GUI with ODE simulation [Fitzhugh-Nagumo model]
 %    lorenzgui       - GUI with ODE simulation [Lorenz chaotic attractor]
 %    fftsmooth       - GUI with interactive image filtering
-%    bpfilter        - Interactive bandpass filter 
+%    bpfilter        - Interactive bandpass filter
 %    rlc_circuit     - Interactive RLC circuit circuit simulation
 %
 %    daqplot         - Analog data acquisition GUI

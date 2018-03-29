@@ -4,7 +4,7 @@
 %    w = gui.pushbutton creates a widget that displays a button. When
 %    the button is pressed, the button is "on" for 100 msec and then
 %    resets automatically. The widget is added to the current
-%    autogui (if there is no current autogui, one is created). 
+%    autogui (if there is no current autogui, one is created).
 %
 %    w = gui.pushbutton(M) creates the widget with the label
 %    string M.
@@ -22,7 +22,7 @@
 %    w2 = gui.pushbutton('Start simulation');
 %    w3 = gui.pushbutton('Start simulation', g);
 %
-%    Also see: 
+%    Also see:
 %    <a href="matlab:help gui.pushbutton.Value">gui.pushbutton.Value</a>
 %    <a href="matlab:help gui.pushbutton.ValueChangedFcn">gui.pushbutton.ValueChangedFcn</a>
 %    <a href="matlab:help gui.togglebutton">gui.togglebutton</a>
@@ -43,10 +43,10 @@ classdef (Sealed) pushbutton < gui.labeleduicontrol
         %    b.Value = false;
         %  Setting Value to true is equivalent to a button press.
         %  Setting Value to false is equivalent to clearing out a prior
-        %  button press.        
-        Value  
+        %  button press.
+        Value
     end
-    
+
     properties(Access=private)
         LastClickTime = []
     end
@@ -54,64 +54,64 @@ classdef (Sealed) pushbutton < gui.labeleduicontrol
     properties(Constant,Access=private)
         ElapsedTimeThreshold = 0.1 % in seconds
     end
-    
+
     methods
         function obj = pushbutton(labelStr, varargin)
             if ~exist('labelStr', 'var')
                 labelStr = 'Pushbutton';
             end
-            
+
             obj = obj@gui.labeleduicontrol('pushbutton',labelStr,varargin{:});
-            assert(~obj.Initialized && ~obj.Visible);                                    
-            
+            assert(~obj.Initialized && ~obj.Visible);
+
             obj.Initialized = true;
             obj.Visible = true;
         end
-        
+
     end
 
     methods
-        
+
         function set.Value(obj , val)
             if isscalar(val) && (isnumeric(val) || islogical(val))
-                if logical(val) 
+                if logical(val)
                     % true -- simulate the button being pressed anew
                     uicontrolCallback(obj);
-                else % false 
+                else % false
                     obj.LastClickTime  = [];
                 end
             else
                 throw(MException('pushbutton:set', 'Value should be true or false'));
             end
         end
-        
+
         function out = get.Value(obj)
             out = ~isempty(obj.LastClickTime) && ...
                   (etime(clock, obj.LastClickTime) <= obj.ElapsedTimeThreshold);
         end
     end
-        
-    
+
+
     methods(Access=protected)
-        
+
         function initNotify(obj)
             initNotify@gui.labeleduicontrol(obj);
             set(obj.UiControl, 'String', get(obj.UiLabel,'String'));
             obj.LabelLocation = 'none';
         end
-        
+
         function postLabelChange(obj, str)
             set(obj.UiControl, 'String', str);
         end
     end
-        
+
     methods(Hidden)
         function uicontrolCallback(obj)
             obj.LastClickTime = clock;
             notify(obj, 'ValueChanged');
         end
-        
+
     end
-    
+
 end
 

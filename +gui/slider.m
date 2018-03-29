@@ -4,7 +4,7 @@
 %    w = gui.slider creates a widget that displays an adjustable slider and
 %    an associated numeric entry field (changes to the slider are reflected
 %    in the number field and vice versa). The widget is added to the
-%    current autogui  (if there is no current autogui, one is created). 
+%    current autogui  (if there is no current autogui, one is created).
 %
 %    w = gui.slider(M) creates the widget with the label string M.
 %
@@ -20,7 +20,7 @@
 %    w2 = gui.slider('Preemphasis', [0 1]);
 %    w3 = gui.slider('Preemphasis', [0 1], g);
 %
-%    Also see: 
+%    Also see:
 %    <a href="matlab:help gui.slider.Value">gui.slider.Value</a>
 %    <a href="matlab:help gui.numericmenu">gui.numericmenu</a>
 %    <a href="matlab:help gui.listbox">gui.listbox</a>
@@ -30,7 +30,7 @@
 classdef (Sealed) slider < gui.labeledwidget
 
     properties(Dependent)
-        % Value 
+        % Value
         %   A number indicating the current position of the slider.
         %   The permissible range of numbers is specified by the ValueRange
         %   property.
@@ -41,42 +41,42 @@ classdef (Sealed) slider < gui.labeledwidget
         %    s.Value % get the value
         Value
     end
-    
+
     properties (Dependent, SetObservable)
 
         % ValueRange - Specifies the range of allowed slider values
         %
         %   ValueRange is a two element vector, [minValue maxValue], that
         %   indicates the values of the leftmost and rightmost slider
-        %   positions. 
+        %   positions.
         %
         %   Sample usage:
         %    w = gui.slider;
         %    w.ValueRange = [50 200];
         ValueRange
-        
+
         % Enable - Specifies whether the widget is active or not.
         %
-        %   Enable is a boolean property (true/false).     
-        %    true => user can modify the state of the widget 
+        %   Enable is a boolean property (true/false).
+        %    true => user can modify the state of the widget
         %           (e.g., enter text into a field, move a slider)
         %    false => the widget is "grayed out" and cannot be modified.
         %
         %   Sample usage:
         %    w = gui.slider;
-        %    w.Enable = false;          
-        Enable        
+        %    w.Enable = false;
+        Enable
     end
-        
+
     properties(Access=private)
         UiControl
         UiFlowContainer
-        UiNumberEdit        
+        UiNumberEdit
     end
-    
+
     methods
         function obj = slider(labelStr, range, varargin)
-            
+
            if ~exist('labelStr', 'var')
                labelStr = 'Choose a value:';
            else
@@ -91,43 +91,43 @@ classdef (Sealed) slider < gui.labeledwidget
                validateRange(range);
            end
            initialValue = mean(range);
-           
-            obj = obj@gui.labeledwidget(labelStr,varargin{:});            
+
+            obj = obj@gui.labeledwidget(labelStr,varargin{:});
             assert(~obj.Initialized && ~obj.Visible);
-            
+
             % Later calls to setSizeInFlow(...) and getHeightInFlow()
-            % assume UiHandle is a uiflowcontainer            
+            % assume UiHandle is a uiflowcontainer
             assert(strcmp(get(obj.UiHandle,'type'), 'uiflowcontainer'));
-            
+
             color = obj.getParentUiColor();
             obj.UiFlowContainer = gui.util.uiflowcontainer('parent', obj.UiHandle, ...
                 'FlowDirection', 'lefttoright');
-            
+
             obj.UiNumberEdit = uicontrol('Style', 'edit', ...
                 'string', num2str(initialValue), ...
                 'BackgroundColor', 'w', ...
                 'parent', obj.UiFlowContainer, ...
                 'tag', 'slider-uinumberedit', ...
                 'callback', @(h,e) editCallback(obj));
-                    
+
             obj.UiControl = uicontrol( 'Style','slider','Parent',obj.UiFlowContainer,...
-                'BackgroundColor',color,...   
-                'units', 'pixels', ...                
+                'BackgroundColor',color,...
+                'units', 'pixels', ...
                 'min', range(1), ...
                 'max', range(2), ...
                 'value', initialValue, ...
-                'HorizontalAlignment', 'Left', ...                
+                'HorizontalAlignment', 'Left', ...
                 'HandleVisibility', 'off', ...
                 'tag', 'slider-uicontrol', ...
                 'callback', @(h,e) propagateValueChange(obj));
-                                                            
+
             obj.Initialized = true;
             obj.Visible = true;
         end
     end
-    
+
     % Interface to properties
-    methods 
+    methods
         function set.Enable(obj,makeEnable)
             if makeEnable
                 set(obj.UiControl,'Enable','on');
@@ -135,12 +135,12 @@ classdef (Sealed) slider < gui.labeledwidget
                 set(obj.UiControl,'Enable','off');
             end
         end
-        
+
         function out = get.Enable(obj)
             out = strcmp(get(obj.UiControl,'Enable'), 'on');
         end
-        
-        
+
+
         function set.Value(obj,val)
             ensureValidNumber(val, 'Value');
             range = obj.ValueRange;
@@ -151,12 +151,12 @@ classdef (Sealed) slider < gui.labeledwidget
             set(obj.UiControl,'Value',val);
             propagateValueChange(obj);
         end
-        
+
         function out = get.Value(obj)
             out = get(obj.UiControl,'Value');
         end
-        
-        function set.ValueRange(obj, range)            
+
+        function set.ValueRange(obj, range)
             validateRange(range);
             v = get(obj.UiControl, 'Value');
             if (v < range(1))
@@ -165,7 +165,7 @@ classdef (Sealed) slider < gui.labeledwidget
                 propagateValueChange(obj);
             elseif (v > range(2))
                 newval = range(2);
-                warning('slider:ValueReset', 'Value set to new MaxValue (%g)', newval);                
+                warning('slider:ValueReset', 'Value set to new MaxValue (%g)', newval);
             else
                 newval = v;
             end
@@ -174,13 +174,13 @@ classdef (Sealed) slider < gui.labeledwidget
                 propagateValueChange(obj);
             end
         end
-        
+
         function out = get.ValueRange(obj)
             out = [get(obj.UiControl, 'Min') get(obj.UiControl, 'Max')];
         end
-        
+
     end
-    
+
     methods (Hidden)
         function editCallback(obj)
             newVal = str2double(get(obj.UiNumberEdit, 'string'));
@@ -194,32 +194,32 @@ classdef (Sealed) slider < gui.labeledwidget
                 propagateValueChange(obj);
             end
         end
- 
+
         function propagateValueChange(obj)
             v = get(obj.UiControl, 'value');
             set(obj.UiNumberEdit, 'String', num2str(v));
             notify(obj, 'ValueChanged');
         end
-        
-    end    
-    
+
+    end
+
     methods (Access=protected)
-        
+
         % called upon initialization
         function initNotify(obj)
             initNotify@gui.labeledwidget(obj);
 
-            labelSize = get(obj.UiLabel, 'Extent'); % [0 0 width height]            
+            labelSize = get(obj.UiLabel, 'Extent'); % [0 0 width height]
             obj.Position = struct('width',  ceil(1.5*labelSize(3)), ...
                                   'height', 2*ceil(1.1*labelSize(4)) );
-            
+
             obj.LabelLocation = 'above';
         end
-        
+
         % override method
-        function postLabelLocationChange(obj, labelLoc)                
-            uiControlHeight = gui.util.uiposition.getHeightInFlow(obj.UiControl);            
-            uiLabelHeight = gui.util.uiposition.getHeightInFlow(obj.UiControl);            
+        function postLabelLocationChange(obj, labelLoc)
+            uiControlHeight = gui.util.uiposition.getHeightInFlow(obj.UiControl);
+            uiLabelHeight = gui.util.uiposition.getHeightInFlow(obj.UiControl);
             switch labelLoc
                 case 'none'
                     obj.setPositionHeight( uiControlHeight );
@@ -227,9 +227,9 @@ classdef (Sealed) slider < gui.labeledwidget
                     obj.setPositionHeight( uiLabelHeight + uiControlHeight );
                 case {'left', 'right'}
                     obj.setPositionHeight( max(uiLabelHeight, uiControlHeight) );
-            end             
+            end
         end
-        
+
         % override method
         % pos is a vector [x y w h]
         function postPositionChange(obj, pos)
@@ -242,10 +242,10 @@ classdef (Sealed) slider < gui.labeledwidget
                 pos(4) = obj.getPositionHeight();
             end
             w = pos(3); h = pos(4);
-            
+
             switch obj.LabelLocation
                 case 'none'
-                    labelpos = [];                    
+                    labelpos = [];
                     ctrlpos = [round(0.70 * w)  round(0.95 * h)];
                     editpos = [round(0.30 * w)  round(0.95 * h)];
                 case {'above','below'}
@@ -256,18 +256,18 @@ classdef (Sealed) slider < gui.labeledwidget
                     labelpos = [round(0.30 * w) round(0.95 * h)];
                     ctrlpos =  [round(0.40 * w) round(0.95 * h)];
                     editpos =  [round(0.25 * w) round(0.95 * h)];
-            end            
-            
-            gui.util.uiposition.setSizeInFlow(obj.UiControl, ctrlpos);            
-            gui.util.uiposition.setSizeInFlow(obj.UiNumberEdit, editpos);            
+            end
+
+            gui.util.uiposition.setSizeInFlow(obj.UiControl, ctrlpos);
+            gui.util.uiposition.setSizeInFlow(obj.UiNumberEdit, editpos);
             if ~isempty(labelpos)
                 gui.util.uiposition.setSizeInFlow(obj.UiLabel, labelpos);
-            end                      
+            end
         end
-        
-    end    
 
-    
+    end
+
+
 end
 
 

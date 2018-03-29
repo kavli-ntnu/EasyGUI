@@ -1,14 +1,14 @@
 % showObjectInfo
-%  A helper class for gui.autogui and gui.widget 
+%  A helper class for gui.autogui and gui.widget
 
 %   Copyright 2009 The MathWorks, Inc.
 
 classdef showObjectInfo
-    
+
     methods(Static,Access=public)
-        
-        % generic routine to display properties. 
-        % Key difference from default display: 
+
+        % generic routine to display properties.
+        % Key difference from default display:
         % 1) logical values shown as true/false instead of 1 and 0).
         % 2) Property names are linked to relevant help command
         %
@@ -29,24 +29,24 @@ classdef showObjectInfo
             p = mc.Properties;
             fprintf('<a href="matlab:help %s">%s</a>\n', ...
                     class(obj), class(obj));
-            
+
             propLength = zeros(1,length(p));
             hideProp = false(1,length(p));
             for i=1:length(p)
                 hideProp(i) = p{i}.Abstract || p{i}.Hidden || ~strcmp(p{i}.GetAccess,'public');
-                propLength(i) = length(p{i}.Name);                    
+                propLength(i) = length(p{i}.Name);
             end
             numSpaces = 3 + max(propLength(~hideProp));
             fprintf('properties:\n');
             for i=1:length(p)
-                if hideProp(i)                   
+                if hideProp(i)
                     continue;
-                end                               
-                    
+                end
+
                 propname = p{i}.Name;
                 propval = obj.(p{i}.Name);
                 propclass = class(propval);
-                
+
                 spaces = char(' '*ones(1,numSpaces-propLength(i)));
                 fprintf('%s<a href="matlab:help %s.%s">%s</a>: ', ...
                     spaces, p{i}.DefiningClass.Name, propname, propname);
@@ -73,9 +73,9 @@ classdef showObjectInfo
                             showDefault = false;
                         end
                 end
-                
+
                 if showDefault
-                    sz = sprintf('%dx',size(propval));                    
+                    sz = sprintf('%dx',size(propval));
                     if iscell(propval)
                         if isempty(propval)
                             fprintf('{}\n');
@@ -90,10 +90,10 @@ classdef showObjectInfo
                         end
                     end
                 end
-                
+
             end
 
-        end        
+        end
 
         % Display the methods on a handle object, leaving out the default
         % implementations. Useful for debugging
@@ -106,7 +106,7 @@ classdef showObjectInfo
                 end
             end
         end
-            
+
     end
-    
+
 end

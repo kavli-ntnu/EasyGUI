@@ -1,7 +1,7 @@
 % gui.manualgui
 %
 %  A simple widget container that does not do any automatic layout. It can
-%  be used as a parent for widgets (like gui.slider and gui.textmenu) but 
+%  be used as a parent for widgets (like gui.slider and gui.textmenu) but
 %  their positions within the container have to be set explicitly.
 %
 %  Sample usage:
@@ -14,18 +14,18 @@
 %   Copyright 2009 The MathWorks, Inc.
 
 classdef manualgui < gui.container
-        
+
     properties(GetAccess=public, SetAccess=private)
         % Children
         %   A cell array of widgets in the gui. This property is
-        %   read-only.        
+        %   read-only.
         Children
     end
-    
+
     properties(Access=private)
         ChildWidgets = {}
     end
-    
+
     methods
         function obj = manualgui()
             h = figure(...
@@ -37,33 +37,33 @@ classdef manualgui < gui.container
                 'Resize'            , 'on', ...
                 'Visible'           , 'on', ...
                 'WindowStyle'       , 'normal');
-            
-            obj@gui.container(h);      
-            
+
+            obj@gui.container(h);
+
         end
-                
-        
+
+
         function delete(obj)
             % As widgets get deleted, obj.ChildWidgets can change under us
             % so use a temporary list for looping
-            tempChildWidgets = obj.Children;            
+            tempChildWidgets = obj.Children;
             for i=1:numel(tempChildWidgets)
                 removeChild(obj, tempChildWidgets{i});
             end
-            % No need to delete obj.UiMainContainer, etc.; these will 
+            % No need to delete obj.UiMainContainer, etc.; these will
             % be cleaned up by the figure deletion.
         end
-        
+
         function out = get.Children(obj)
             out = obj.ChildWidgets;
         end
 
-        function addChild(obj, child)            
+        function addChild(obj, child)
            assert(isa(child,'gui.widget'));
             if ~isempty(findChildIndex(obj, child))
                 throw(MException('manualgui:addChild', 'Widget is already a child of the container'));
-            end 
-            
+            end
+
             obj.ChildWidgets{end+1} = child;
             child.setUiParent(obj, obj.UiHandle);
             addlistener(child, 'ObjectBeingDestroyed', @(h,e) removeChild(obj, h));
@@ -71,18 +71,18 @@ classdef manualgui < gui.container
 
         function removeChild(obj, child)
             index = obj.findChildIndex(child);
-            if isempty(index) 
+            if isempty(index)
                 throw(MException('manualgui:removeChild', 'Widget is not a child of the container'));
             end
-            
+
             if isvalid(child)
                 delete(child); % this will invoke removeChild via listener
                 % and will also release all the associated listeners
             else
                 obj.ChildWidgets(index) = [];
-            end            
+            end
         end
-        
+
     end
 
     methods (Access=private)
@@ -94,7 +94,7 @@ classdef manualgui < gui.container
                index = find(cellfun(@(w) child == w, obj.ChildWidgets));
            end
        end
-  
+
     end
-    
+
 end

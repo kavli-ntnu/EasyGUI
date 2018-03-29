@@ -1,11 +1,11 @@
 % AUTODEMO2     -     EasyGUI example using automatic layout and callbacks
 %
-%   GUI for plotting a Lissajous curve 
+%   GUI for plotting a Lissajous curve
 %   (http://en.wikipedia.org/wiki/Lissajous_curve)
 %      sin(f1) vs. sin(f2 + theta)
-%  
-%   This example builds on AUTODEMO. It demonstrates how to process all 
-%   the user input using a callback function. This allows the function 
+%
+%   This example builds on AUTODEMO. It demonstrates how to process all
+%   the user input using a callback function. This allows the function
 %   to create the GUI and return to the command line right away.
 
 %   Copyright 2009 The MathWorks, Inc.
@@ -36,17 +36,17 @@ set(ax2,'nextplot','add');
 myGui.ValueChangedFcn = @processInput;
 
 %% ----------------------------------------------------
-     % Note: 
+     % Note:
      % a) the code in processInput is identical to that in
      %    the while loop of LISSAJOUS
      % b) processInput is a nested function, so it has access to
      %    all the variables declared in the top-level (freq1, freq1,
      %    phaseDiff, etc.)
-     
+
     function processInput(hWidget) %#ok<INUSD>
         % hWidget is the widget with the just-received input
         % we don't need this information in this demo
-        
+
         phaseRadians = phaseDiff.Value * (pi/180);
         sig1 = sin(2*pi*t*freq1.Value);
         sig2 = sin(2*pi*t*freq2.Value + phaseRadians);
@@ -68,7 +68,7 @@ myGui.ValueChangedFcn = @processInput;
                 comet(sig1,sig2);
         end
     end
-    
+
 end
 
 

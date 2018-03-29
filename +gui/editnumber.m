@@ -17,7 +17,7 @@
 %    w2 = gui.editnumber('Frequency (Hz)');
 %    w3 = gui.editnumber('Frequency (Hz)',g);
 %
-%    Also see: 
+%    Also see:
 %    <a href="matlab:help gui.editnumber.Value">gui.editnumber.Value</a>
 %    <a href="matlab:help gui.numericmenu">gui.numericmenu</a>
 
@@ -25,57 +25,57 @@
 
 classdef (Sealed) editnumber < gui.labeleduicontrol
     properties(Dependent)
-        % Value 
+        % Value
         %   The number entered by the user. This property can also be set
-        %   programmatically. 
+        %   programmatically.
         %
         %   Sample usage:
         %    s = gui.editnumber('Number of samples');
         %    s.Value % get the value
         %    s.Value = s.Value + 100; % increment the value
         Value
-    end    
-    
+    end
+
     properties(Access=private)
         OldString = '0.0'
     end
-    
+
     % Main Constructor
     methods
-        function obj = editnumber(labelStr, varargin)            
+        function obj = editnumber(labelStr, varargin)
             if ~exist('labelStr', 'var')
                 labelStr = 'Enter a number:';
             end
-            
+
             obj = obj@gui.labeleduicontrol('edit',labelStr,varargin{:});
             % assert(~obj.Initialized && ~obj.Visible);
             % assert(strcmp(obj.LabelLocation, 'above'));
-            
+
             set(obj.UiControl, 'BackgroundColor', [0.95 .95 .95]);
             obj.Value = 0;
-            
+
             % obj is the most derived class
             obj.Initialized = true;
             obj.Visible = true;
         end
     end
-    
+
     % Interface to properties
-    methods 
+    methods
         function set.Value(obj,val)
-            ensureValidNumber(val, 'Value');            
+            ensureValidNumber(val, 'Value');
             newStr = num2str(val,10);
             set(obj.UiControl,'String',newStr);
             obj.OldString = newStr;
             notify(obj,'ValueChanged');
         end
-        
+
         function out = get.Value(obj)
-            out = str2double(get(obj.UiControl,'String'));            
+            out = str2double(get(obj.UiControl,'String'));
         end
     end
 
-    methods (Hidden)       
+    methods (Hidden)
         function uicontrolCallback(obj)
             newStr = get(obj.UiControl, 'string');
             newVal = str2double(newStr);
@@ -86,9 +86,9 @@ classdef (Sealed) editnumber < gui.labeleduicontrol
                 notify(obj, 'ValueChanged');
             end
         end
-            
+
     end
-    
+
 end
 
 

@@ -22,7 +22,7 @@
 %    w2 = gui.listbox('Filter type', {'Lowpass', 'Highpass'});
 %    w3 = gui.listbox('Filter type', {'Lowpass', 'Highpass'}, g);
 %
-%    Also see: 
+%    Also see:
 %    <a href="matlab:help gui.listbox.Value">gui.listbox.Value</a>
 %    <a href="matlab:help gui.textmenu">gui.textmenu</a>
 %    <a href="matlab:help gui.numericmenu">gui.numericmenu</a>
@@ -32,9 +32,9 @@
 classdef (Sealed) listbox < gui.labeleduicontrol
 
     properties(Dependent)
-        % Value 
+        % Value
         %   A string or cell array of strings indicating the current list
-        %   selection (the MenuItems property specifies items of the list). 
+        %   selection (the MenuItems property specifies items of the list).
         %
         %   Sample usage:
         %    s = gui.listbox('Choose colors', {'Red', 'Green', 'Blue', 'Yellow'});
@@ -47,9 +47,9 @@ classdef (Sealed) listbox < gui.labeleduicontrol
         %    s.AllowMultipleSelections = false;
         %    s.Value % get the value (a string)
         %    s.Value = 'Green'; % set the value
-        Value 
+        Value
     end
-    
+
     properties(Dependent)
         % MenuItems
         %   A cell array of strings specifying the items of the list. Whenever
@@ -61,16 +61,16 @@ classdef (Sealed) listbox < gui.labeleduicontrol
         %    s = gui.listbox('Choose a color', initialColors);
         %    % change the menu items
         %    s.MenuItems = {'Yellow', 'Blue', 'Black', 'Red'};
-        %    s.Value % automatically reset to 'Yellow'        
+        %    s.Value % automatically reset to 'Yellow'
         MenuItems
-        
+
         % AllowMultipleSelections
         %   A boolean that indicates whether multiple list items can be
         %   selected or not.
         %
         %   true  => Multiple list items can be selected (using
-        %            Ctrl-Click). The Value property returns a 
-        %            cell array of strings. 
+        %            Ctrl-Click). The Value property returns a
+        %            cell array of strings.
         %   false => Only one list item can be  selected at a time. The
         %            Value property returns a string.
         %
@@ -79,10 +79,10 @@ classdef (Sealed) listbox < gui.labeleduicontrol
         %    s.AllowMultipleSelections = false;
         AllowMultipleSelections
     end
-    
+
     methods
         function obj = listbox(labelStr, menuItems, varargin)
-            
+
             if ~exist('labelStr', 'var')
                 labelStr = 'Choose one or more menu items';
             end
@@ -92,23 +92,23 @@ classdef (Sealed) listbox < gui.labeleduicontrol
 
             obj = obj@gui.labeleduicontrol('listbox',labelStr,varargin{:});
             assert(~obj.Initialized && ~obj.Visible);
-            
+
             % Later calls to setSizeInFlow(...) etc.
             % assume UiHandle is a uiflowcontainer
             assert(strcmp(get(obj.UiHandle,'type'), 'uiflowcontainer'));
-            
+
             set(obj.UiControl,'Min',0);
 
             obj.MenuItems = menuItems;
             obj.AllowMultipleSelections = true;
-            
+
             obj.Initialized = true;
             obj.Visible = true;
-            
+
         end
 
     end
-    
+
     methods
         function set.MenuItems(obj, itemList)
             if ~(ischar(itemList) || iscellstr(itemList))
@@ -128,7 +128,7 @@ classdef (Sealed) listbox < gui.labeleduicontrol
         function out = get.MenuItems(obj)
             out = get(obj.UiControl, 'String');
         end
-    
+
         function out = get.AllowMultipleSelections(obj)
             out = get(obj.UiControl,'Max') > 1;
         end
@@ -140,12 +140,12 @@ classdef (Sealed) listbox < gui.labeleduicontrol
                 set(obj.UiControl,'Max',1);
             end
         end
-        
+
         % Set the Value property to an empty matrix [] to have no selection
-        % if mult. sel, value can be a vector of indices 
-        
+        % if mult. sel, value can be a vector of indices
+
         function out = get.Value(obj)
-            
+
             indices = get(obj.UiControl, 'Value');
             items = obj.MenuItems;
              if obj.AllowMultipleSelections
@@ -154,11 +154,11 @@ classdef (Sealed) listbox < gui.labeleduicontrol
                  out = items{indices};
              end
          end
-        
+
         function set.Value(obj , val)
             items = obj.MenuItems;
             allowMultipleSel = obj.AllowMultipleSelections;
-            try                
+            try
                 if ~(isempty(val) || ischar(val) || iscellstr(val))
                     throw(MException('listbox:InvalidValue','Invalid value'));
                 end
@@ -166,7 +166,7 @@ classdef (Sealed) listbox < gui.labeleduicontrol
                     val = cellstr(val);
                 end
                 if numel(val) > 1,
-                    val = unique(val); 
+                    val = unique(val);
                 end
                 if ~allowMultipleSel && (numel(val) ~= 1)
                     throw(MException('listbox:InvalidValue','Invalid value'));
@@ -178,7 +178,7 @@ classdef (Sealed) listbox < gui.labeleduicontrol
                     if isempty(index)
                         throw(MException('listbox:InvalidValue','Invalid value'));
                     end
-                    indices(i) = index; 
+                    indices(i) = index;
                 end
             catch ME %#ok<NASGU>
                 if strcmp(ME.identifier,'listbox:InvalidValue')
@@ -195,26 +195,26 @@ classdef (Sealed) listbox < gui.labeleduicontrol
             set(obj.UiControl,'Value', indices);
             notify(obj, 'ValueChanged');
         end
-        
+
     end
 
     methods(Access=protected)
-        
+
         % called upon initialization
         function initNotify(obj)
             initNotify@gui.labeleduicontrol(obj);
-            
+
             % figure out the default height of the listbox
             % the +0.5 is just a layout adjustment tweak
             labelSize = get(obj.UiLabel, 'Extent'); % [0 0 width height]
             obj.Position = struct('height', (numel(obj.MenuItems)+0.8) * labelSize(4) + 10);
-            
+
             obj.LabelLocation = 'above';
         end
 
-        
+
         % override method
-        % pos is a vector [x y w h]        
+        % pos is a vector [x y w h]
         function postPositionChange(obj, pos)
             nans = isnan(pos(3:4));
             if all(nans), return; end
@@ -225,7 +225,7 @@ classdef (Sealed) listbox < gui.labeleduicontrol
                 pos(4) = obj.getPositionHeight();
             end
             w = pos(3); h = pos(4);
-            
+
             switch obj.LabelLocation
                 case 'none'
                     labelpos = [];
@@ -240,16 +240,16 @@ classdef (Sealed) listbox < gui.labeleduicontrol
                     labelpos = [round(0.55 * w) round(0.90 * h)];
                     ctrlpos =  [round(0.40 * w) round(0.90 * h)];
             end
-            
+
             % we know UiControl and UiLabel are in a flowcontainer
-            gui.util.uiposition.setSizeInFlow(obj.UiControl, ctrlpos);            
+            gui.util.uiposition.setSizeInFlow(obj.UiControl, ctrlpos);
             if ~isempty(labelpos)
                 gui.util.uiposition.setSizeInFlow(obj.UiLabel, labelpos);
-            end                            
+            end
         end
-        
-    end
-    
 
-    
+    end
+
+
+
 end

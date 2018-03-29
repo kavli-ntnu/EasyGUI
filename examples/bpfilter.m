@@ -39,11 +39,11 @@ ax2 = subplot(212);
 
 while myGui.waitForInput
     inputsig = sin(2*pi*t*inputHz.Value);
-    
+
     if myGui.LastInput == filterOrder
         fprintf('Filter order changed to %d\n', filterOrder.Value);
     end
-        
+
     % create a bandpass filter of specified width and order
     frac = centerHz.Value/Nyquist;
     delta = bandwidthHz.Value/Nyquist;
@@ -61,11 +61,11 @@ while myGui.waitForInput
     line([inputHz.Value inputHz.Value], [-100 5], 'color','r');
     xlabel('Frequency (Hz)');
     ylabel('Power gain dB)');
-    
+
     axes(ax2);
     plot(t, outputsig, 'r');
     ylim([-1 1]);
     xlabel('Time (sec'); ylabel('Amplitude');
-    title('Output');            
+    title('Output');
 end
 

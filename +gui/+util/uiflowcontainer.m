@@ -6,7 +6,7 @@
 function h = uiflowcontainer(varargin)
 persistent MATLABPre2008b
 
-if isempty(MATLABPre2008b)    
+if isempty(MATLABPre2008b)
     MATLABPre2008b = verLessThan('matlab', '7.7');
 end
 

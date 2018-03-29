@@ -6,7 +6,7 @@
 %   user is able to invoke other MATLAB commands.
 %
 %   DAQPLOT3 builds on DAQPLOT and DAQPLOT2. It demonstrates how to use the
-%   GUI.DAQINPUT widget in an asynchronous (i.e., non-blocking) manner.  
+%   GUI.DAQINPUT widget in an asynchronous (i.e., non-blocking) manner.
 %   This is achieved by processing the input in a callback function rather
 %   than a while loop.
 %
@@ -27,9 +27,9 @@ daq.SampleRate = 8000;
 
 % We could also do this:
 %   myGui.ValueChangedFcn = @processInput;
-% but if myGui has other input widgets the chart would be updated 
-% needlessly. It is more efficient to set ValueChangedFcn 
-% on the widget itself. 
+% but if myGui has other input widgets the chart would be updated
+% needlessly. It is more efficient to set ValueChangedFcn
+% on the widget itself.
 
 daq.ValueChangedFcn = @processInput;
 
@@ -42,6 +42,6 @@ daq.ValueChangedFcn = @processInput;
         info = daq.Value;
         chart.update(info.data);
     end
-   
+
 end
 

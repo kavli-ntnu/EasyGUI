@@ -2,9 +2,9 @@
 %
 %   CATALOG shows a list of the available EasyGUI widgets. To create
 %   a widget (e.g., gui.listbox), click on the corresponding entry.
-%   The widget's Value property will be printed at the MATLAB command 
-%   prompt. 
-%  
+%   The widget's Value property will be printed at the MATLAB command
+%   prompt.
+%
 %   This GUI is itself written using EasyGUI.
 
 %   Copyright 2009 The MathWorks, Inc.
@@ -16,21 +16,21 @@ myGui.Name = 'A catalog of gui widgets';
 
 gui.label('Select a widget');
 widgetTypes = {
-'gui.checkbox' 
-'gui.edittext' 
-'gui.editnumber' 
-'gui.listbox' 
-'gui.textmenu' 
-'gui.numericmenu' 
-'gui.slider' 
-'gui.pushbutton' 
-'gui.togglebutton' 
-'gui.label' 
-'gui.daqinput' 
+'gui.checkbox'
+'gui.edittext'
+'gui.editnumber'
+'gui.listbox'
+'gui.textmenu'
+'gui.numericmenu'
+'gui.slider'
+'gui.pushbutton'
+'gui.togglebutton'
+'gui.label'
+'gui.daqinput'
 };
 
 
-widgetType = gui.listbox('', widgetTypes); 
+widgetType = gui.listbox('', widgetTypes);
 widgetType.AllowMultipleSelections = false;
 widgetType.Position.height = 180;
 helpButton = gui.pushbutton('Help');
@@ -58,11 +58,11 @@ widgetType.Value = 'gui.checkbox';
         classname = widgetType.Value;
         disp(hWidget.Value)
     end
-    
+
     function showHelp(ignore) %#ok<INUSD>
         classname = widgetType.Value;
         doc(classname);
     end
-    
+
 end
 

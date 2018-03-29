@@ -1,9 +1,9 @@
 % gui.textmenu
-%    A widget that displays a drop-down menu 
+%    A widget that displays a drop-down menu
 %
 %    w = gui.textmenu creates a widget that displays a
-%    drop-down menu. The widget is added to the current autogui 
-%    (if there is no current autogui, one is created). 
+%    drop-down menu. The widget is added to the current autogui
+%    (if there is no current autogui, one is created).
 %
 %    w = gui.textmenu(M) creates the widget with the label
 %    string M.
@@ -21,7 +21,7 @@
 %    w2 = gui.textmenu('Filter type', {'Lowpass', 'Highpass'});
 %    w3 = gui.textmenu('Filter type', {'Lowpass', 'Highpass'}, g);
 %
-%    Also see: 
+%    Also see:
 %    <a href="matlab:help gui.textmenu.Value">gui.textmenu.Value</a>
 %    <a href="matlab:help gui.numericmenu">gui.numericmenu</a>
 %    <a href="matlab:help gui.listbox">gui.listbox</a>
@@ -31,10 +31,10 @@
 classdef (Sealed) textmenu < gui.labeleduicontrol
 
     properties(Dependent)
-        % Value 
+        % Value
         %   A string indicating the current menu selection. The MenuItems
         %   property specifies the list of choices.
-        % 
+        %
         %   Sample usage:
         %    s = gui.textmenu('Choose a filter', {'Lowpass', 'Highpass', 'Bandpass'});
         %    if strcmp(s.Value, 'Lowpass')  % get the value
@@ -42,10 +42,10 @@ classdef (Sealed) textmenu < gui.labeleduicontrol
         %    end
         %    s.Value = 'Bandpass';  % set the current selection
         %    % invalid assignment, since 'Notch' is not one of the menu options
-        %    s.Value = 'Notch';   
-        Value 
+        %    s.Value = 'Notch';
+        Value
     end
-    
+
     properties(Dependent)
         % MenuItems
         %   A cell array of strings specifying the menu options. Whenever
@@ -60,7 +60,7 @@ classdef (Sealed) textmenu < gui.labeleduicontrol
         %    s.Value % automatically reset to 'Lowpass-1'
         MenuItems
     end
-    
+
     methods
         function obj = textmenu(labelStr, menuItems, varargin)
 
@@ -74,11 +74,11 @@ classdef (Sealed) textmenu < gui.labeleduicontrol
             obj = obj@gui.labeleduicontrol('popupmenu',labelStr,varargin{:});
             assert(~obj.Initialized && ~obj.Visible);
             obj.MenuItems = menuItems;
-            
+
             obj.Initialized = true;
             obj.Visible = true;
         end
-        
+
     end
 
     methods
@@ -101,7 +101,7 @@ classdef (Sealed) textmenu < gui.labeleduicontrol
         function out = get.MenuItems(obj)
             out = get(obj.UiControl, 'String');
         end
-        
+
         function set.Value(obj , val)
             items = obj.MenuItems;
             if ischar(val)
@@ -111,7 +111,7 @@ classdef (Sealed) textmenu < gui.labeleduicontrol
             end
 
             if isempty(index)
-                itemsString = sprintf(' ''%s''\n', items{:});                
+                itemsString = sprintf(' ''%s''\n', items{:});
                 throw(MException('textmenu:InvalidValue', ...
                     'Value should match one of the menu items:\n%s', ...
                     itemsString));
@@ -120,7 +120,7 @@ classdef (Sealed) textmenu < gui.labeleduicontrol
             set(obj.UiControl,'Value', index(1));
             notify(obj, 'ValueChanged');
         end
-        
+
         function out = get.Value(obj)
             index = get(obj.UiControl, 'Value');
             items = obj.MenuItems;
@@ -128,15 +128,15 @@ classdef (Sealed) textmenu < gui.labeleduicontrol
         end
     end
 
-    
+
     methods(Access=protected)
-       
+
         function initNotify(obj)
             initNotify@gui.labeleduicontrol(obj);
             obj.LabelLocation = 'above';
         end
-        
-    end    
-        
+
+    end
+
 end
 
