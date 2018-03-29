@@ -1,23 +1,23 @@
 % uiposition
-%  A helper class for gui.autogui and gui.widget 
+%  A helper class for gui.autogui and gui.widget
 
 %   Copyright 2009 The MathWorks, Inc.
 
 classdef uiposition
-    
+
     properties(Dependent)
         X
         Y
         Width
         Height
     end
-        
+
     properties(Access=private)
-        UiHandle        
-        InFlowContainer        
+        UiHandle
+        InFlowContainer
         CachedPositionVec
     end
-    
+
     methods
         function obj = uiposition(uihandle)
             if ~ishandle(uihandle)
@@ -27,26 +27,26 @@ classdef uiposition
             obj.InFlowContainer = strcmp(get(get(uihandle, 'parent'),'type'), 'uiflowcontainer');
             obj = updateCachedPosition(obj);
         end
-        
+
         function out = get.X(obj)
-           out = obj.CachedPositionVec(1); 
+           out = obj.CachedPositionVec(1);
         end
 
         function out = get.Y(obj)
-           out = obj.CachedPositionVec(2); 
+           out = obj.CachedPositionVec(2);
         end
-                
+
         function obj = set.Width(obj, newWidth)
             pos = obj.CachedPositionVec;
             pos(3) = newWidth;
             if obj.InFlowContainer
-                set(obj.UiHandle,'widthlimits', pos([3 3]));
+                set(obj.UiHandle,'WidthLimits', pos([3 3]));
             else
                 set(obj.UiHandle,'position',pos);
             end
             obj.CachedPositionVec = pos;
         end
-        
+
         function out = get.Width(obj)
             out = obj.CachedPositionVec(3);
         end
@@ -55,22 +55,22 @@ classdef uiposition
             pos = obj.CachedPositionVec;
             pos(4) = newHeight;
             if obj.InFlowContainer
-                set(obj.UiHandle,'heightlimits', pos([4 4]));
+                set(obj.UiHandle,'HeightLimits', pos([4 4]));
             else
                 set(obj.UiHandle,'position',pos);
             end
             obj.CachedPositionVec = pos;
         end
-        
+
         function out = get.Height(obj)
             out = obj.CachedPositionVec(4);
         end
-        
+
         function out = getVector(obj)
             out = obj.CachedPositionVec;
         end
-                    
-        
+
+
         % assume s is already validated
         function obj = setStruct(obj, s)
             if obj.InFlowContainer
@@ -89,9 +89,9 @@ classdef uiposition
                 pos(indices) = obj.CachedPositionVec(indices);
                 set(obj.UiHandle, 'position', pos);
                 obj.CachedPositionVec = pos;
-            end            
+            end
         end
-        
+
         function obj = setVector(obj,pos)
             if obj.InFlowContainer
                 % x and y coordinates don't matter
@@ -108,7 +108,7 @@ classdef uiposition
                 pos(indices) = obj.CachedPositionVec(indices);
                 set(obj.UiHandle, 'position', pos);
                 obj.CachedPositionVec = pos;
-            end                
+            end
         end
 
         function obj = updateCachedPosition(obj)
@@ -121,25 +121,25 @@ classdef uiposition
             end
             obj.CachedPositionVec = pos;
         end
-        
+
     end
-    
+
     methods(Static)
-        
+
         function setSizeInFlow(uihandle, sz)
             if ~isnan(sz(1))
-                set(uihandle,'widthlimits',  sz([1 1]));
+                set(uihandle,'WidthLimits',  sz([1 1]));
             end
             if ~isnan(sz(2))
-                set(uihandle,'heightlimits', sz([2 2]));
+                set(uihandle,'HeightLimits', sz([2 2]));
             end
-        end       
+        end
 
-        function out = getHeightInFlow(uihandle)            
-            hlim = get(uihandle,'heightlimits');
+        function out = getHeightInFlow(uihandle)
+            hlim = get(uihandle,'HeightLimits');
             out = hlim(1);
         end
-                
+
         function pos = structToVec(s)
             pos = [nan nan nan nan];
             if ~isstruct(s)
@@ -147,15 +147,15 @@ classdef uiposition
                     'Position should be a struct with fields ''x'', ''y'', ''width'', or ''height'''));
             end
             % if there are no fields in the struct, pos will return with all
-            % nan fields            
+            % nan fields
             isValid = true(1,4);
             fldnames = fieldnames(s);
             for i=1:numel(fldnames)
                 switch fldnames{i}
-                    case 'x', 
+                    case 'x',
                         isValid(1) = isScalarNumber(s.x);
                         if isValid(1), pos(1) = s.x; end
-                    case 'y',                         
+                    case 'y',
                         isValid(2) = isScalarNumber(s.y);
                         if isValid(2), pos(2) = s.y; end
                     case 'width'
@@ -166,16 +166,16 @@ classdef uiposition
                         if isValid(4), pos(4) = s.height; end
                     otherwise
                         throw(MException('position:set', ...
-                            'Valid fields are ''x'', ''y'', ''width'', and ''height'''));                        
-                end                
+                            'Valid fields are ''x'', ''y'', ''width'', and ''height'''));
+                end
             end
-            
+
             if ~all(isValid)
                 throw(MException('position:set', ...
                     'x, y, width and height should be integers'));
-            end                
-        end        
-        
+            end
+        end
+
     end
 end
 
