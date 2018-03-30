@@ -4,7 +4,7 @@
 %   Copyright 2009 The MathWorks, Inc.
 
 function v = version
-
-v.majorVersion = 1;
-v.minorVersion = 0;
-v.releaseDate = 'Feb-09-2009';
+    v.majorVersion = 1;
+    v.minorVersion = 5;
+    v.patchVersion = 0;
+    v.releaseDate = 'Mar-30-2018';
