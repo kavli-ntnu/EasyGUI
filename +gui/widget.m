@@ -259,7 +259,7 @@ classdef widget < handle
             notify(obj, 'PositionChanged');
             refresh(obj.ParentFigure);
         end
-
+        
         function s = get.Position(obj)
             p = obj.UiHandlePos.getVector();
             s = struct('x', p(1), 'y', p(2), 'width', p(3), 'height', p(4));
@@ -314,6 +314,13 @@ classdef widget < handle
             else
                 color = get(obj.ParentUiHandle, 'BackgroundColor');
             end
+        end
+        
+        % This method prevents widget clipping. It shall only be called
+        % once.
+        function adjustUiHandleHeight(obj)
+            obj.UiHandlePos.Height = obj.UiHandlePos.Height + 2.5*obj.UiHandle.Margin;
+            refresh(obj.ParentFigure);
         end
     end
 

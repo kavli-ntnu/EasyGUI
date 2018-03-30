@@ -54,6 +54,7 @@ classdef (Sealed) togglebutton < gui.labeleduicontrol
 
             obj.Initialized = true;
             obj.Visible = true;
+            obj.adjustUiHandleHeight();
         end
 
     end

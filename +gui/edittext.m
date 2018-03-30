@@ -53,6 +53,8 @@ classdef (Sealed) edittext < gui.labeleduicontrol
             % obj is the most derived class
             obj.Initialized = true;
             obj.Visible = true;
+            
+            obj.adjustUiHandleHeight();
         end
     end
 

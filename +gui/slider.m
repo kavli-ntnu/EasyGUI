@@ -123,6 +123,8 @@ classdef (Sealed) slider < gui.labeledwidget
 
             obj.Initialized = true;
             obj.Visible = true;
+            
+            obj.adjustUiHandleHeight();
         end
     end
 
@@ -228,6 +230,7 @@ classdef (Sealed) slider < gui.labeledwidget
                 case {'left', 'right'}
                     obj.setPositionHeight( max(uiLabelHeight, uiControlHeight) );
             end
+            obj.adjustUiHandleHeight();
         end
 
         % override method
