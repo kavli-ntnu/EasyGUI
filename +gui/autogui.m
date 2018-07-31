@@ -826,7 +826,7 @@ classdef (Sealed) autogui < gui.container
             % recalculate height of current panel
             obj.ChildList(index).storedHeight = newHeight;
             indices = obj.findChildrenInPanel();
-            totalHeight = sum([obj.ChildList(indices).storedHeight]) + (4*numel(indices));
+            totalHeight = sum([obj.ChildList(indices).storedHeight]) + (7*numel(indices));
             totalHeight = totalHeight + 10;
 
             % check if we need to grow the GuiArea
